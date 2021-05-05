@@ -1,8 +1,10 @@
-"""
 #change names into "onset""interval/duration"
+#to be fixed: no multiple flashes condition; many 0 flash 0 tones;
+
 import expyriment;
-import numpy;
-import pygame;
+import numpy as np;
+from expyriment.misc import constants as constants;
+
 audio_duration=7;
 audio_gap=57;
 illusion_audio=[2,3,4]
@@ -16,7 +18,6 @@ type_of_trials=4
 exp = expyriment.design.Experiment(name="First Experiment")
 expyriment.control.initialize(exp)
 
-trial_type_num= numpy.random.randint(1,60);
 
 #illusion_audio_number=stim_variable[numpy.random.choice(stim_variable)];
 stim_visual=expyriment.stimuli.Circle(50, colour=(255,255,255));
@@ -40,7 +41,8 @@ expyriment.control.start()
 trial_category=num_of_trial/type_of_trials
 audi_repitition=trial_category/len(illusion_audio)
 
-
+# response options on keys 
+#key_options=[expyriment.misc.constants.K_0, expyriment.misc.constants.K_1,¶expyriment.misc.constants.K_2, expyriment.misc.constants.K_3,expyriment.misc.constants.K_4]¶
 
 
 def one_flash_x_beeps(x=0):
@@ -71,23 +73,33 @@ def x_flashes_x_beeps(x=0):
     for i in range(illusion_audio[x]):
         visual_onset.append(visual_audio_gap+i*(visual_gap+visual_duration));
         audio_onset.append(i*(audio_duration+audio_gap));
-    pygame.init()
+    
+    exp.clock.reset_stopwatch()
+
     for i in range(illusion_audio[x]): 
-        if pygame.time.get_ticks()==audio_onset[i]:
+       # exp.clock.reset_stopwatch()
+
+        if exp.clock.stopwatch_time()==audio_onset[i]:
             stim_audio.present()
             exp.clock.wait(visual_audio_gap)
-        if pygame.time.get_ticks()==visual_onset[i]:       
+        if exp.clock.stopwatch_time()==visual_onset[i]:       
             stim_visual.present()
             exp.clock.wait(visual_duration)
-            stim_visual_absence.present()
+            expyriment.stimuli.BlankScreen.present()
             exp.clock.wait(visual_gap)   
             
             
 response_list=[]            
+list_num=np.arange(60);
+np.random.shuffle(list_num);
 # 5 trials per condition, 15 illusionary, 45 non-illusionary
-for k in range(type_of_trials):
+for k in range(60):
     # illusion trials: one flash, multiple beeps
+    expyriment.stimuli.TextScreen("trial ", str(k)).present()
+    exp.keyboard.wait(constants.K_SPACE)
+    trial_type_num= list_num[k];
     
+
     if trial_type_num<(1+trial_category):
 #    for s in range(len(illusion_audio)):
         if trial_type_num<(1+1*audi_repitition):
@@ -125,10 +137,12 @@ for k in range(type_of_trials):
         elif trial_type_num<(1+3*audi_repitition):
             x_flashes_x_beeps(x=2);
     
-    response, time=expyriment.io.Keyboard.wait(keys=['0','1','2','3','4']);
-    response_list.append(response);
+   #   response, time=expyriment.io.Keyboard.wait(keys=['0','1','2','3','4']);
+    expyriment.stimuli.TextScreen("How many flashes ", "Please press any key for digits").present();
 
-       
+    response, time=exp.keyboard.wait([constants.K_0,constants.K_1,constants.K_2,constants.K_3,constants.K_4]);
+    response_list.append(response);
+  
 #one beep, multiple flashes
 # if number==1:
 #     stim_audio.present()
@@ -136,3 +150,4 @@ for k in range(type_of_trials):
 
 
 expyriment.control.end()
+
