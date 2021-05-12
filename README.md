@@ -26,3 +26,8 @@ Control trials: x flashes ~ x beeps (2<=x<=4), and x flashes~0 beep (2<=x<=4); <
 The onsets and durations of stimuli are summarized in the figure 2:<br />
 
 ![image](https://user-images.githubusercontent.com/47482896/118040889-6d84de80-b372-11eb-9686-605de78611bf.png)
+<br />
+<br />
+<br />
+<br />
+**The code is flawed in that only 1 flash x beeps are presented normally, while the rest conditions/types are skipped somehow (blank screen, no beep). Thus the results are not plotted.**
