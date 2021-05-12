@@ -14,5 +14,5 @@ There are 60 trials in total, with visual stimulus flashing from 1 to 4 times, a
 Illusion trials: 1 flash ~ x beeps (2<=x<=4);  <br />
 Control trials: x flashes ~ x beeps (2<=x<=4), and x flashes~0 beep (2<=x<=4); <br />
 <br />
-The onsets of stimuli are summarized in the figure 2:
+The onsets and durations of stimuli are summarized in the figure 2:
 ![image](https://user-images.githubusercontent.com/47482896/117945411-970c1e80-b30e-11eb-9f1b-bf26d71369cd.png)
