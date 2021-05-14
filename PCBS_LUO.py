@@ -1,6 +1,7 @@
+
 # There are 60 trials in total, with visual stimulus flashing from 1 to 4 times, and audio stimulus ranging from 0 to 4 times, with 5 trials* each condition.
-# Illusion trials: 1 flash ~ x beeps (2<=x<=4);
-# Control trials: x flashes ~ x beeps (2<=x<=4), and x flashes~0 beep (2<=x<=4);
+# Illusion trials: 1 flash x beeps (2<=x<=4);
+# Control trials: x flashes x beeps (2<=x<=4),x flashes 1 beep (2<=x<=4), and x flashes 0 beep (2<=x<=4);
 
 
 import expyriment;
@@ -22,7 +23,7 @@ gap_visual=50;
 #intial gap between the 1st beep and the 1st flash
 gap_onset_visual_audio=23-audio_duration
 
-num_total_trials=5;
+num_total_trials=60;
 #categoraized into 4 types*3 conditions/type*5 trials/condition  for coding convenience:
 #one_flash_x_beeps,x_flash_1_beeps, x_flash_0_beeps,x_flashes_x_beeps
 type_of_trials=4;
@@ -37,6 +38,7 @@ stim_audio=expyriment.stimuli.Tone(audio_duration);
 
 #preload stimuli 
 stim_visual.preload();
+stim_visual_absence.preload();
 stim_audio.preload();
 
 expyriment.control.start();
@@ -110,7 +112,7 @@ for k in range(num_total_trials):
     exp.keyboard.wait(constants.K_SPACE);
     trial_condition= trial_num[k];
     num_flash,num_beep=0,0;
-#    illusion trials: one flash multiple beeps
+    #illusion trials: one flash multiple beeps
     if trial_condition<(1+num_trial_per_type):
         if trial_condition<(1+1*num_of_trials_per_condition):
             num_flash,num_beep=one_flash_x_beeps(0);
@@ -153,7 +155,7 @@ for k in range(num_total_trials):
     
     # response options
     expyriment.stimuli.TextScreen("How many flashes did you see?", "Please respond by pressing any key from 1~4 on the keyboard").present();
-    #keys' corresponding number 
+    #keys' corresponding numbers 
     response, time=exp.keyboard.wait([constants.K_0,constants.K_1,constants.K_2,constants.K_3,constants.K_4]);
     if response==49:
         response=1;
@@ -172,5 +174,4 @@ for i in range(num_total_trials):
         print("False \n");
     else:
         print("Correct \n");
-
-expyriment.control.end();
+expyriment.control.end()
